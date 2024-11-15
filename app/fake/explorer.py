@@ -23,6 +23,7 @@ def get_one(name: str) -> Explorer | None:
             return _explorer
     return None
 
+
 # Currently all stubs
 def create(explorer: Explorer) -> Explorer:
     """Add a new explorer."""

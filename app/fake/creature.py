@@ -27,6 +27,7 @@ def get_one(name: str) -> Creature | None:
             return _creature
     return None
 
+
 # Currently all stubs
 def create(creature: Creature) -> Creature:
     """Add a new creature."""
