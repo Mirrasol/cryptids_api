@@ -5,6 +5,7 @@ from sqlite3 import (
     connect,
     Connection,
     Cursor,
+    IntegrityError,
 )
 
 conn: Connection | None = None
