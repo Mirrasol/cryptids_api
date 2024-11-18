@@ -13,7 +13,7 @@ curs: Cursor | None = None
 
 
 def get_db(name: str | None = None, reset: bool = False):
-    """Establish connection to SQLite DB's module."""
+    """Establish connection to SQLite DB's file."""
     global conn, curs
     if conn:
         if not reset:
