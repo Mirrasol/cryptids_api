@@ -3,11 +3,11 @@ from app.model.creature import Creature
 from app.errors import Missing, Duplicate
 
 
-curs.execute("""create table if not exists creature(
-                name text primary key,
-                country text,
-                area text,
-                description text,
+curs.execute("""create table if not exists creature( \
+                name text primary key, \
+                country text, \
+                area text, \
+                description text, \
                 aka text)""")
 
 
@@ -27,7 +27,7 @@ def model_to_dict(creature: Creature) -> dict:
 
 
 def get_one(name: str) -> Creature:
-    query = 'select * from creature where name=:name'
+    query = """select * from creature where name=:name"""
     params = {'name': name}
     curs.execute(query, params)
     row = curs.fetchone()
@@ -38,14 +38,14 @@ def get_one(name: str) -> Creature:
 
 
 def get_all() -> list[Creature]:
-    query = 'select * from creature'
+    query = """select * from creature"""
     curs.execute(query)
     return [row_to_model(row) for row in curs.fetchall()]
 
 
 def create(creature: Creature) -> Creature:
-    query = 'insert into creature (name, country, area, description, aka) \
-        values (:name, :country, :area, :description, :aka)'
+    query = """insert into creature (name, country, area, description, aka) \
+        values (:name, :country, :area, :description, :aka)"""
     params = model_to_dict(creature)
     try:
         curs.execute(query, params)
@@ -72,7 +72,7 @@ def modify(name: str, creature: Creature) -> Creature:
 
 
 def delete(name: str):
-    query = 'delete from creature where name = :name'
+    query = """delete from creature where name = :name"""
     params = {'name': name}
     curs.execute(query, params)
     if curs.rowcount != 1:

@@ -3,9 +3,9 @@ from app.model.explorer import Explorer
 from app.errors import Missing, Duplicate
 
 
-curs.execute("""create table if not exists explorer(
-                name text primary key,
-                country text,
+curs.execute("""create table if not exists explorer( \
+                name text primary key, \
+                country text, \
                 description text)""")
 
 

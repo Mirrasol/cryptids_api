@@ -1,7 +1,7 @@
 from app.model.explorer import Explorer
+from app.errors import Missing, Duplicate
 
-# Mock database, to be replaced by real data and SQL
-_explorers = [
+fakes = [
     Explorer(name='Claude Hande',
              country='FR',
              description='Scarce during full moons'),
@@ -11,35 +11,48 @@ _explorers = [
 ]
 
 
+def find(name: str) -> Explorer | None:
+    for fake in fakes:
+        if fake.name == name:
+            return fake
+    return None
+
+
+def check_missing(name: str):
+    if not find(name):
+        raise Missing(msg=f'Missing explorer {name}')
+
+
+def check_duplicate(name: str):
+    if find(name):
+        raise Duplicate(msg=f'Duplicate explorer {name}')
+
+
 def get_all() -> list[Explorer]:
     """Return all explorers."""
-    return _explorers
+    return fakes
 
 
-def get_one(name: str) -> Explorer | None:
+def get_one(name: str) -> Explorer:
     """Return one explorer."""
-    for _explorer in _explorers:
-        if _explorer.name == name:
-            return _explorer
-    return None
+    check_missing(name)
+    return find(name)
 
 
 # Currently all stubs
 def create(explorer: Explorer) -> Explorer:
     """Add a new explorer."""
+    check_duplicate(explorer.name)
     return explorer
 
 
-def modify(explorer: Explorer) -> Explorer:
+def modify(name: str, explorer: Explorer) -> Explorer:
     """Update some info about the explorer."""
+    check_missing(name)
     return explorer
 
 
-def replace(explorer: Explorer) -> Explorer:
-    """Full update about the explorer."""
-    return explorer
-
-
-def delete(name: str) -> bool:
+def delete(name: str) -> None:
     """Delete the explorer; return None if the explorer existed."""
+    check_missing(name)
     return None

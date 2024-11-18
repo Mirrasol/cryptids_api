@@ -1,7 +1,7 @@
 from app.model.creature import Creature
+from app.errors import Missing, Duplicate
 
-# Mock database, to be replaced by real data and SQL
-_creatures = [
+fakes = [
     Creature(name='Yeti',
              aka='Abominable Snowman',
              country='CN',
@@ -15,35 +15,48 @@ _creatures = [
 ]
 
 
+def find(name: str) -> Creature | None:
+    for fake in fakes:
+        if fake.name == name:
+            return fake
+    return None
+
+
+def check_missing(name: str):
+    if not find(name):
+        raise Missing(msg=f'Missing creature {name}')
+
+
+def check_duplicate(name: str):
+    if find(name):
+        raise Duplicate(msg=f'Duplicate creature {name}')
+
+
 def get_all() -> list[Creature]:
     """Return all explorers."""
-    return _creatures
+    return fakes
 
 
-def get_one(name: str) -> Creature | None:
+def get_one(name: str) -> Creature:
     """Return one creature."""
-    for _creature in _creatures:
-        if _creature.name == name:
-            return _creature
-    return None
+    check_missing(name)
+    return find(name)
 
 
 # Currently all stubs
 def create(creature: Creature) -> Creature:
     """Add a new creature."""
+    check_duplicate(creature.name)
     return creature
 
 
-def modify(creature: Creature) -> Creature:
+def modify(name: str, creature: Creature) -> Creature:
     """Update some info about the creature."""
+    check_missing(name)
     return creature
 
 
-def replace(creature: Creature) -> Creature:
-    """Full update about the creature."""
-    return creature
-
-
-def delete(name: str) -> bool:
+def delete(name: str) -> None:
     """Delete the creature; return None if the creature existed."""
+    check_missing(name)
     return None
