@@ -1,13 +1,15 @@
+import sqlite3
+
 from app.data.init import curs, IntegrityError
 from app.model.creature import Creature
 from app.errors import Missing, Duplicate
 
 
-curs.execute("""create table if not exists creature( \
-                name text primary key, \
-                country text, \
-                area text, \
-                description text, \
+curs.execute("""create table if not exists creature(
+                name text primary key,
+                country text,
+                area text,
+                description text,
                 aka text)""")
 
 

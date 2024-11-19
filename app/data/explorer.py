@@ -1,21 +1,18 @@
-from init import curs, IntegrityError
+from app.data.init import curs, IntegrityError
 from app.model.explorer import Explorer
 from app.errors import Missing, Duplicate
 
 
-curs.execute("""create table if not exists explorer( \
-                name text primary key, \
-                country text, \
+curs.execute("""create table if not exists explorer(
+                name primary key,
+                country text,
                 description text)""")
 
 
 def row_to_model(row: tuple) -> Explorer:
     name, country, description = row
-    return Explorer(
-        name=name,
-        country=country,
-        description=description,
-    )
+    return Explorer(name=name, country=country,
+                    description=description)
 
 
 def model_to_dict(explorer: Explorer) -> dict:

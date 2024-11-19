@@ -5,6 +5,7 @@ if os.getenv('CRYPTID_UNIT_TEST'):
 else:
     from app.data import explorer as data
 
+
 def get_all() -> list[Explorer]:
     return data.get_all()
 
