@@ -68,7 +68,7 @@ def get_all() -> list[User]:
     return data.get_all()
 
 
-def get_one(name) -> User:
+def get_one(name: str) -> User:
     return data.get_one(name)
 
 

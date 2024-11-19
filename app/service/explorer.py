@@ -1,6 +1,9 @@
+import os
 from app.model.explorer import Explorer
-import app.fake.creature as data
-
+if os.getenv('CRYPTID_UNIT_TEST'):
+    from app.fake import explorer as data
+else:
+    from app.data import explorer as data
 
 def get_all() -> list[Explorer]:
     return data.get_all()
@@ -14,13 +17,9 @@ def create(explorer: Explorer) -> Explorer:
     return data.create(explorer)
 
 
-def replace(id, explorer: Explorer) -> Explorer:
-    return data.replace(id, explorer)
+def modify(name: str, explorer: Explorer) -> Explorer:
+    return data.modify(name, explorer)
 
 
-def modify(id, explorer: Explorer) -> Explorer:
-    return data.modify(id, explorer)
-
-
-def delete(id, explorer: Explorer) -> bool:
-    return data.delete(id)
+def delete(name: str, explorer: Explorer) -> None:
+    return data.delete(name)
