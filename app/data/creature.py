@@ -1,5 +1,3 @@
-import sqlite3
-
 from app.data.init import curs, IntegrityError
 from app.model.creature import Creature
 from app.errors import Missing, Duplicate
