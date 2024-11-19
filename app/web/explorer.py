@@ -1,7 +1,11 @@
+import os
 from fastapi import APIRouter, HTTPException
 from app.model.explorer import Explorer
-import app.fake.explorer as service
 from app.errors import Duplicate, Missing
+if os.getenv('CRYPTID_UNIT_TEST'):
+    from app.fake import explorer as service
+else:
+    from app.service import explorer as service
 
 router = APIRouter(prefix='/explorer')
 
@@ -27,7 +31,7 @@ def create(explorer: Explorer) -> Explorer:
     try:
         return service.create(explorer)
     except Duplicate as e:
-        raise HTTPException(status_code=404, detail=e.msg)
+        raise HTTPException(status_code=409, detail=e.msg)
 
 
 @router.patch('/')

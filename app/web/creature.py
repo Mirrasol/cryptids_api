@@ -1,6 +1,11 @@
-from fastapi import APIRouter
+import os
+from fastapi import APIRouter, HTTPException
 from app.model.creature import Creature
-import app.fake.creature as service
+from app.errors import Missing, Duplicate
+if os.getenv('CRYPTID_UNIT_TEST'):
+    from app.fake import creature as service
+else:
+    from app.service import creature as service
 
 router = APIRouter(prefix='/creature')
 
@@ -11,26 +16,32 @@ def get_all() -> list[Creature]:
 
 
 @router.get('/{name}')
-def get_one(name) -> Creature | None:
-    return service.get_one(name)
+def get_one(name) -> Creature:
+    try:
+        return service.get_one(name)
+    except Missing as e:
+        raise HTTPException(status_code=404, detail=e.msg)
 
 
-# All the rest - currently stubs
-@router.post('/')
+@router.post('/', status_code=201)
 def create(creature: Creature) -> Creature:
-    return service.create(creature)
+    try:
+        return service.create(creature)
+    except Duplicate as e:
+        raise HTTPException(status_code=409, detail=e.msg)
 
 
 @router.patch('/')
-def modify(creature: Creature) -> Creature:
-    return service.modify(creature)
-
-
-@router.put('/')
-def replace(creature: Creature) -> Creature:
-    return service.replace(creature)
+def modify(name: str, creature: Creature) -> Creature:
+    try:
+        return service.modify(name, creature)
+    except Missing as e:
+        raise HTTPException(status_code=404, detail=e.msg)
 
 
 @router.delete('/{name}')
-def delete(name: str):
-    return service.delete(name)
+def delete(name: str) -> None:
+    try:
+        return service.delete(name)
+    except Missing as e:
+        raise HTTPException(status_code=404, detail=e.msg)
