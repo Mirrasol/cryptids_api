@@ -10,9 +10,11 @@ os.environ['CRYPTID_UNIT_TEST'] = 'true'
 @pytest.fixture
 def sample() -> Creature:
     return Creature(
-        name='dragon',
-        description='Wings!',
-        country='*',
+        name='Yeti',
+        aka='Abominable Snowman',
+        country='CN',
+        description='Hirsute Himalayan',
+        area='Himalayas',
     )
 
 
